@@ -29,7 +29,7 @@ function Home({ setInGame, createRoom, joinRoom }: HomeProps) {
     setInGame(true)
   }
   return (
-    <main className='bg-stone-800 w-screen h-screen flex flex-col items-center justify-center gap-12'>
+    <>
       <h1 className='text-white text-4xl font-bold'>Hash Game</h1>
       <div className='p-20 rounded-xl bg-teal-900/20 flex flex-col items-center justify-center gap-12'>
         <form onSubmit={onSubmit} className='flex flex-col gap-1 '>
@@ -60,7 +60,7 @@ function Home({ setInGame, createRoom, joinRoom }: HomeProps) {
           Criar uma sala
         </button>
       </div>
-    </main>
+    </>
   )
 }
 

@@ -18,7 +18,7 @@ function App() {
   const joinRoom = useCallback(id => client.emit(EVENT_NAMES.JOIN_ROOM, id), [])
   const deleteRoom = useCallback(() => client.emit(EVENT_NAMES.DELETE_ROOM), [])
   return (
-    <>
+    <main className='bg-stone-800 w-screen h-screen flex flex-col items-center justify-center gap-12'>
       {!inGame ? (
         <Home
           setInGame={setInGame}
@@ -28,7 +28,7 @@ function App() {
       ) : (
         <Room roomId={roomId} deleteRoom={deleteRoom} setInGame={setInGame} />
       )}
-    </>
+    </main>
   )
 }
 
