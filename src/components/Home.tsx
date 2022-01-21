@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa'
 import { RoomContext } from '../contexts/context'
 
@@ -10,7 +10,7 @@ type HomeProps = {
 function HomeBase({ setInGame }: HomeProps) {
   const [inputValue, setInputValue] = useState('')
 
-  const room = useContext(RoomContext)
+  const room = RoomContext
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()

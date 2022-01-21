@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx'
-import { createContext } from 'react'
 import { client, EVENT_NAMES } from '../services/socket-io'
 import { CgClose } from 'react-icons/cg'
 import { FaRegCircle } from 'react-icons/fa'
@@ -112,4 +111,4 @@ export class Room {
   }
 }
 
-export const RoomContext = createContext<Room>({} as Room)
+export const RoomContext = new Room()

@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { useContext } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { RoomContext } from '../contexts/context'
 
@@ -8,7 +7,7 @@ type RoomProps = {
 }
 
 function RoomBase({ setInGame }: RoomProps) {
-  const room = useContext(RoomContext)
+  const room = RoomContext
 
   return (
     <>
