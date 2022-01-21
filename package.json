@@ -2,10 +2,10 @@
   "name": "hash-frontend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview --port ${PORT}",
-    "start": "serve -l ${PORT} /dist/"
+    "start": "vite --port $PORT",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "dependencies": {
     "mobx": "^6.3.12",
