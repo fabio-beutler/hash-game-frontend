@@ -1,6 +1,8 @@
 import { makeAutoObservable } from 'mobx'
 import { createContext } from 'react'
 import { client, EVENT_NAMES } from '../services/socket-io'
+import { CgClose } from 'react-icons/cg'
+import { FaRegCircle } from 'react-icons/fa'
 
 class Room {
   id: string | null
@@ -14,7 +16,7 @@ class Room {
   myPlayerSymbol: 'X' | 'O'
   otherPlayerSymbol: 'X' | 'O'
 
-  winPlayer: 'one' | 'two' | null
+  winPlayer: 'no-winner' | 'one' | 'two' | null
   gameStatus: 'off' | 'game' | 'end'
 
   constructor() {
@@ -46,10 +48,15 @@ class Room {
 
     client.on(EVENT_NAMES.UPDATE_ROOM, data => {
       if (!this.id) this.id = data.id
-      this.tablePositions = data.game.tablePositions
+
+      if (String(this.tablePositions) !== String(data.game.tablePositions)) {
+        this.tablePositions = data.game.tablePositions
+      }
+
       this.currentPlayer = data.game.currentPlayer
       this.gameStatus = data.game.status
       console.log(data.game.status, 'status')
+      this.winPlayer = data.game.win
 
       console.log(data.playerOne)
       console.log(client.id)
@@ -77,6 +84,14 @@ class Room {
       client.emit(EVENT_NAMES.GAME_SET_POSITION, position)
   }
 
+  setPositionLocal(position: number) {
+    if (this.gameStatus !== 'game') return
+    if (this.tablePositions[position]) return
+    if (this.currentPlayer !== this.myPlayer) return
+    if (this.myPlayer) this.tablePositions[position] = this.myPlayer
+    this.setGamePosition(position)
+  }
+
   alternateSymbol() {
     this.stateSymbol = !this.stateSymbol
     if (this.stateSymbol) {
@@ -90,6 +105,10 @@ class Room {
 
   leave() {
     client.emit(EVENT_NAMES.LEAVE_ROOM)
+  }
+
+  resetGame() {
+    client.emit(EVENT_NAMES.GAME_RESET)
   }
 }
 

@@ -1,11 +1,12 @@
 import socketIoClient from 'socket.io-client'
 
 export enum EVENT_NAMES {
-  CREATE_ROOM = 'create-room', // (event)
-  JOIN_ROOM = 'join-room', // (event, room-id: string)
-  LEAVE_ROOM = 'leave-room', // (event)
-  GAME_SET_POSITION = 'game-set-position', // (event, position: number(0, 8))
-  UPDATE_ROOM = 'update-room' // (event, room)
+  CREATE_ROOM = 'create-room', // EMIT > (event) | LISTEN (event, room);
+  JOIN_ROOM = 'join-room', // EMIT > (event, room-id);
+  LEAVE_ROOM = 'leave-room', // EMIT > (event);
+  GAME_SET_POSITION = 'game-set-position', // EMIT > (event, position: number<0, 8>);
+  GAME_RESET = 'game-reset', // EMIT > (event);
+  UPDATE_ROOM = 'update-room' // LISTEN (event, room);
 }
 
 export const client = socketIoClient('http://localhost:4000')

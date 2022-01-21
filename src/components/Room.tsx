@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { useContext, useEffect } from 'react'
-import { FaArrowLeft, FaRockrms } from 'react-icons/fa'
+import { useContext } from 'react'
+import { FaArrowLeft } from 'react-icons/fa'
 import { RoomContext } from '../contexts/context'
 
 type RoomProps = {
@@ -27,24 +27,6 @@ function RoomBase({ setInGame }: RoomProps) {
 
       <div className='flex gap-8 items-center'>
         <div className='bg-teal-900 p-1 flex items-center gap-1 rounded-full'>
-          {/* {room.currentPlayer === 'one' || room.currentPlayer === null ? (
-            <span className='text-white bg-teal-700 px-3 py-2 rounded-full select-none'>
-              player 1
-            </span>
-          ) : (
-            <span className='text-white px-3 py-2 rounded-full select-none'>
-              player 1
-            </span>
-          )}
-          {room.currentPlayer === 'two' ? (
-            <span className={`text-white ${room.currentPlayer === 'two' && 'bg-teal-700'} px-3 py-2 rounded-full select-none`}>
-              player 2
-            </span>
-          ) : (
-            <span className='text-white px-3 py-2 rounded-full select-none'>
-              player 2
-            </span>
-          )} */}
           {room.gameStatus !== 'game' ? (
             <span className={`text-white px-3 py-2 rounded-full select-none`}>
               Waiting second player
@@ -92,7 +74,16 @@ function RoomBase({ setInGame }: RoomProps) {
             <span className='text-white px-3 py-2 select-none'>
               Room ID:{' '}
               <strong className='select-text selection:bg-teal-400'>
-                {room.id}
+                <input
+                  type='text'
+                  value={room.id}
+                  contentEditable={false}
+                  onClick={e => {
+                    e.target.select()
+                    window.navigator.clipboard.writeText(e.target.value)
+                  }}
+                  className='bg-transparent w-14 outline-none cursor-pointer'
+                />
               </strong>
             </span>
           </div>
@@ -103,7 +94,7 @@ function RoomBase({ setInGame }: RoomProps) {
         {room.tablePositions.map((position, index) => (
           <div
             key={index}
-            onClick={() => room.setGamePosition(index)}
+            onClick={() => room.setPositionLocal(index)}
             className='text-white py-14 px-16 bg-stone-800 font-bold text-2xl hover:bg-stone-800/90 transition duration-300 cursor-pointer '
           >
             {position === room.myPlayer && room.myPlayerSymbol}
@@ -115,9 +106,15 @@ function RoomBase({ setInGame }: RoomProps) {
       {room.gameStatus === 'end' && (
         <div className='fixed w-screen h-screen top-0 left-0 bg-stone-900/2 backdrop-blur-sm grid place-items-center'>
           <div className='bg-stone-900 p-16 text-white rounded-2xl flex flex-col items-center gap-8'>
-            {room.winPlayer ? `Player ${room.winPlayer} won!!` : 'Draw!!'}
+            {(room.winPlayer === 'one' || room.winPlayer === 'two') &&
+              `Player ${room.winPlayer} won!!`}
 
-            <button className='bg-teal-800 rounded-xl px-8 py-4'>
+            {room.winPlayer === 'no-winner' && 'Draw!!'}
+
+            <button
+              onClick={() => room.resetGame()}
+              className='bg-teal-800 rounded-xl px-8 py-4'
+            >
               restart
             </button>
           </div>
