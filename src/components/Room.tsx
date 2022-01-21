@@ -79,8 +79,9 @@ function RoomBase({ setInGame }: RoomProps) {
                   value={room.id}
                   contentEditable={false}
                   onClick={e => {
-                    e.target.select()
-                    window.navigator.clipboard.writeText(e.target.value)
+                    const target = e.target as HTMLInputElement
+                    target.select()
+                    window.navigator.clipboard.writeText(target.value)
                   }}
                   className='bg-transparent w-14 outline-none cursor-pointer'
                 />
