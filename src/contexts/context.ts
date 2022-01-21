@@ -4,7 +4,7 @@ import { client, EVENT_NAMES } from '../services/socket-io'
 import { CgClose } from 'react-icons/cg'
 import { FaRegCircle } from 'react-icons/fa'
 
-class Room {
+export class Room {
   id: string | null
   tablePositions: string[]
   currentPlayer: 'one' | 'two' | null
@@ -112,4 +112,4 @@ class Room {
   }
 }
 
-export const RoomContext = createContext<Room>(new Room())
+export const RoomContext = createContext<Room>({} as Room)
