@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { useContext } from 'react'
-import { FaArrowLeft } from 'react-icons/fa'
+import { useContext, useEffect } from 'react'
+import { FaArrowLeft, FaRockrms } from 'react-icons/fa'
 import { RoomContext } from '../contexts/context'
 
 type RoomProps = {
@@ -27,12 +27,46 @@ function RoomBase({ setInGame }: RoomProps) {
 
       <div className='flex gap-8 items-center'>
         <div className='bg-teal-900 p-1 flex items-center gap-1 rounded-full'>
-          <span className='text-white bg-teal-700 px-3 py-2 rounded-full select-none'>
-            player 1
-          </span>
-          <span className='text-white px-3 py-2 rounded-full select-none'>
-            player 2
-          </span>
+          {/* {room.currentPlayer === 'one' || room.currentPlayer === null ? (
+            <span className='text-white bg-teal-700 px-3 py-2 rounded-full select-none'>
+              player 1
+            </span>
+          ) : (
+            <span className='text-white px-3 py-2 rounded-full select-none'>
+              player 1
+            </span>
+          )}
+          {room.currentPlayer === 'two' ? (
+            <span className={`text-white ${room.currentPlayer === 'two' && 'bg-teal-700'} px-3 py-2 rounded-full select-none`}>
+              player 2
+            </span>
+          ) : (
+            <span className='text-white px-3 py-2 rounded-full select-none'>
+              player 2
+            </span>
+          )} */}
+          {room.gameStatus !== 'game' ? (
+            <span className={`text-white px-3 py-2 rounded-full select-none`}>
+              Waiting second player
+            </span>
+          ) : (
+            <>
+              <span
+                className={`text-white ${
+                  room.currentPlayer === 'one' && 'bg-teal-700'
+                } px-3 py-2 rounded-full select-none`}
+              >
+                player 1
+              </span>
+              <span
+                className={`text-white ${
+                  room.currentPlayer === 'two' && 'bg-teal-700'
+                } px-3 py-2 rounded-full select-none`}
+              >
+                player 2
+              </span>
+            </>
+          )}
         </div>
 
         <div className='flex items-center bg-teal-900 rounded-full'>
@@ -43,8 +77,8 @@ function RoomBase({ setInGame }: RoomProps) {
                 type='checkbox'
                 id='toggle'
                 className='sr-only'
-                checked={room.markCircle === 'O'}
-                onChange={room.setMarkCircle.bind(room)}
+                checked={room.stateSymbol}
+                onChange={room.alternateSymbol.bind(room)}
               />
               <div className='block bg-teal-700 w-14 h-8 rounded-full'></div>
               <div className='dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition'></div>
@@ -72,12 +106,23 @@ function RoomBase({ setInGame }: RoomProps) {
             onClick={() => room.setGamePosition(index)}
             className='text-white py-14 px-16 bg-stone-800 font-bold text-2xl hover:bg-stone-800/90 transition duration-300 cursor-pointer '
           >
-            {position === 'one' && 'x'}
-            {position === 'two' && 'o'}
-            {/* {position ? 'O' : 'X'} */}
+            {position === room.myPlayer && room.myPlayerSymbol}
+            {position === room.otherPlayer && room.otherPlayerSymbol}
           </div>
         ))}
       </div>
+
+      {room.gameStatus === 'end' && (
+        <div className='fixed w-screen h-screen top-0 left-0 bg-stone-900/2 backdrop-blur-sm grid place-items-center'>
+          <div className='bg-stone-900 p-16 text-white rounded-2xl flex flex-col items-center gap-8'>
+            {room.winPlayer ? `Player ${room.winPlayer} won!!` : 'Draw!!'}
+
+            <button className='bg-teal-800 rounded-xl px-8 py-4'>
+              restart
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }
