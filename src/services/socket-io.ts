@@ -9,7 +9,7 @@ export enum EVENT_NAMES {
   UPDATE_ROOM = 'update-room' // LISTEN (event, room);
 }
 
-export const client = socketIoClient('http://localhost:4000')
+export const client = socketIoClient(import.meta.env.VITE_API_URL)
 
 client.on(`${EVENT_NAMES.LEAVE_ROOM}-response`, (error, data) => {
   // console.log(error)
